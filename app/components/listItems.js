@@ -11,6 +11,7 @@ import SupportIcon from '@mui/icons-material/Support';
 import Link from 'next/link'
 import Avatar from '@mui/material/Avatar';
 import Image from 'next/image'
+import LogoutIcon from '@mui/icons-material/Logout';
 
 export const mainListItems = ({ updateAppBarText }) => (
   <React.Fragment>
@@ -52,6 +53,14 @@ export const mainListItems = ({ updateAppBarText }) => (
           <SupportIcon />
         </ListItemIcon>
         <ListItemText primary="Support" />
+      </ListItemButton>
+    </Link>
+    <Link href="/support">
+      <ListItemButton onClick={() => updateAppBarText('Support')}>
+        <ListItemIcon>
+          <LogoutIcon />
+        </ListItemIcon>
+        <ListItemText primary="Logout" />
       </ListItemButton>
     </Link>
   </React.Fragment>
