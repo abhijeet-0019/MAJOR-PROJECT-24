@@ -12,6 +12,8 @@ import Link from 'next/link'
 import Avatar from '@mui/material/Avatar';
 import Image from 'next/image'
 import LogoutIcon from '@mui/icons-material/Logout';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications';
 
 export const mainListItems = ({ updateAppBarText }) => (
   <React.Fragment>
@@ -23,7 +25,7 @@ export const mainListItems = ({ updateAppBarText }) => (
       alt="Picture of the author"
     />
     </Avatar> */}
-    <Link href="/drives">
+    <Link href="/client/drives">
       <ListItemButton onClick={() => updateAppBarText('Drives')}>
         <ListItemIcon>
           <DashboardIcon />
@@ -31,7 +33,15 @@ export const mainListItems = ({ updateAppBarText }) => (
         <ListItemText primary="Drives" />
       </ListItemButton>
     </Link>
-    <Link href="/profile">
+    <Link href="/client/notification">
+      <ListItemButton onClick={() => updateAppBarText('Notifications')}>
+        <ListItemIcon>
+          <CircleNotificationsIcon />
+        </ListItemIcon>
+        <ListItemText primary="Notifications" />
+      </ListItemButton>
+    </Link>
+    <Link href="/client/profile">
       <ListItemButton onClick={() => updateAppBarText('Profile')}>
         <ListItemIcon>
           <AccountCircleIcon />
@@ -39,7 +49,15 @@ export const mainListItems = ({ updateAppBarText }) => (
         <ListItemText primary="Profile" />
       </ListItemButton>
     </Link>
-    <Link href="/faq">
+    <Link href="/client/prep_material">
+      <ListItemButton onClick={() => updateAppBarText('Preparation Material')}>
+        <ListItemIcon>
+          <MenuBookIcon />
+        </ListItemIcon>
+        <ListItemText primary="Preparation Material" />
+      </ListItemButton>
+    </Link>
+    <Link href="/client/faq">
       <ListItemButton onClick={() => updateAppBarText('FAQ')}>
         <ListItemIcon>
           <HelpCenterIcon />
@@ -47,7 +65,7 @@ export const mainListItems = ({ updateAppBarText }) => (
         <ListItemText primary="FAQ" />
       </ListItemButton>
     </Link>
-    <Link href="/support">
+    <Link href="/client/support">
       <ListItemButton onClick={() => updateAppBarText('Support')}>
         <ListItemIcon>
           <SupportIcon />
@@ -55,8 +73,8 @@ export const mainListItems = ({ updateAppBarText }) => (
         <ListItemText primary="Support" />
       </ListItemButton>
     </Link>
-    <Link href="/support">
-      <ListItemButton onClick={() => updateAppBarText('Support')}>
+    <Link href="/client/drives">
+      <ListItemButton onClick={() => updateAppBarText('Logout')}>
         <ListItemIcon>
           <LogoutIcon />
         </ListItemIcon>

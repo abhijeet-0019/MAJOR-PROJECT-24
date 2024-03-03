@@ -16,7 +16,7 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { mainListItems } from './ListItems';
+import { mainListItems } from './ListItemsClient';
 
 function Copyright(props) {
   return (
@@ -82,7 +82,7 @@ const defaultTheme = createTheme();
 
 export default function Navbar({children}) {
   const [open, setOpen] = React.useState(true);
-  const [appBarText, setAppBarText] = React.useState('Navbar');
+  const [appBarText, setAppBarText] = React.useState('Drives');
   
   const toggleDrawer = () => {
     setOpen(!open);
