@@ -122,7 +122,7 @@ export default function useAPIAuth(){
 
     const login= async (user) => {
         //login and update the access token.
-        if(!!user.email && !!user.password){
+        if(!!user?.email && !!user.password){
             return await fetchLoginToken(getAuthURL()+"login",{
                 method: 'POST',
                 headers: {

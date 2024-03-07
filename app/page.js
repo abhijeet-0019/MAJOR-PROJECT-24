@@ -1,8 +1,18 @@
+'use client'
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
 
 export default function Home() {
+  const router=useRouter();
+
+  useEffect(() => {
+    router.push('/sign');
+  }, []);
+
   return (
     <>
-    <h1 className="bg-red-400 text-black">ELLO THERE MATE</h1>
+    <h1>Welcome to TPO Portal @ MBM University</h1>
     </>
   );
 }
