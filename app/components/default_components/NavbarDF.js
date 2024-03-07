@@ -82,7 +82,7 @@ const defaultTheme = createTheme();
 
 export default function Navbar({children}) {
   const [open, setOpen] = React.useState(true);
-  const [appBarText, setAppBarText] = React.useState('Drives');
+  const [appBarText, setAppBarText] = React.useState('About');
   
   const toggleDrawer = () => {
     setOpen(!open);
