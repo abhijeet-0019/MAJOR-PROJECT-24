@@ -14,6 +14,7 @@ import FitbitIcon from '@mui/icons-material/Fitbit';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import GroupsIcon from '@mui/icons-material/Groups';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
+import LoginIcon from '@mui/icons-material/Login';
 
 export const mainListItems = ({ updateAppBarText }) => (
   <React.Fragment>
@@ -25,6 +26,14 @@ export const mainListItems = ({ updateAppBarText }) => (
       alt="Picture of the author"
     />
     </Avatar> */}
+    <Link href="/signin">
+      <ListItemButton onClick={() => updateAppBarText('SignIn')}>
+        <ListItemIcon>
+          <LoginIcon />
+        </ListItemIcon>
+        <ListItemText primary="SignIn" />
+      </ListItemButton>
+    </Link>
     <Link href="/d_f/st_reg">
       <ListItemButton onClick={() => updateAppBarText('Student Registration')}>
         <ListItemIcon>

@@ -4,10 +4,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
@@ -34,7 +31,7 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-
+ 
   const { loginStatus,setUser,getAuthHeader} = useAPIAuth();
   const { getItems } = useAPIData();
   const [email, setEmail] = useState("");
@@ -84,6 +81,7 @@ export default function SignIn() {
     setUser(user).then(success=>{
       console.log(user);
       console.log("success -> ", success)
+      const userType = sessionStorage.userType;
       if (success) {
         if (userType === "admin") {
           router.push("../admin/dashboard");
@@ -121,11 +119,12 @@ export default function SignIn() {
           sessionStorage.setItem("userType", userType);
           sessionStorage.setItem("userID", user_id);
 
-          /*if (userType === "admin") {
+          if (userType === "admin") {
             router.push("../admin/dashboard");
+            // window.location.reload();
           } else if (userType === "applicant") {
             router.push("../client/drives");
-          }*/
+          }
         });
       }
   },[loginStatus]);
@@ -146,7 +145,7 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5" sx={{ color: 'black', fontWeight: 'bold' }}> 
-            Sign in
+            Sign In
           </Typography>
           <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -176,7 +175,8 @@ export default function SignIn() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2, color:'black', bgcolor: 'blue' }}
+              sx={{ mt: 3, mb: 2, color:'black'}}
+              className=" bg-sky-400"
             >
               Sign In
             </Button>

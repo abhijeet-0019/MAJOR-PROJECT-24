@@ -71,7 +71,6 @@ export const mainListItems = ({ updateAppBarText }) => (
         </ListItemIcon>
         <ListItemText primary="Logout" />
       </ListItemButton>
-    </Link>
-    
+    </Link>  
   </React.Fragment>
 );

@@ -19,7 +19,7 @@ import { useRouter } from 'next/navigation';
 
 
 export const mainListItems = ({ updateAppBarText }) => (
- 
+
   <React.Fragment>
     {/* <Avatar sx={{width: 100, height: 100, display:'flex', justifyContent: 'center'}} >
     <Image
@@ -29,7 +29,7 @@ export const mainListItems = ({ updateAppBarText }) => (
       alt="Picture of the author"
     />
     </Avatar> */}
-   
+
     <Link href="/client/drives">
       <ListItemButton onClick={() => updateAppBarText('Drives')}>
         <ListItemIcon>
@@ -86,19 +86,18 @@ export const mainListItems = ({ updateAppBarText }) => (
         <ListItemText primary="Logout" />
       </ListItemButton>
     </Link>
-    <Link>
-    <ListItemButton onClick={()=>{
-      localStorage.clear();
-      cookies.remove('access token');
-      cookies.remove('refresh token');
-      window,location.reload;
-    }}>
-      <ListItemIcon>
-        <LogoutIcon />
-      </ListItemIcon>
-      <ListItemText primary="Logout" />
-    </ListItemButton>
-    </Link>
-
+    {/* <Link>
+      <ListItemButton onClick={() => {
+        localStorage.clear();
+        cookies.remove('access token');
+        cookies.remove('refresh token');
+        window.location.reload;
+      }}>
+        <ListItemIcon>
+          <LogoutIcon />
+        </ListItemIcon>
+        <ListItemText primary="Logout" />
+      </ListItemButton>
+    </Link> */}
   </React.Fragment>
 );

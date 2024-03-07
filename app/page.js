@@ -7,7 +7,14 @@ export default function Home() {
   const router=useRouter();
 
   useEffect(() => {
-    router.push('/sign');
+    const storedUserType = sessionStorage.getItem("userType");
+    if(storedUserType === "admin"){
+      router.push('/admin/dashboard');
+    }else if(storedUserType === "applicant"){
+      router.push('/client/drives');
+    }else{
+      router.push('/signin');
+    }
   }, []);
 
   return (

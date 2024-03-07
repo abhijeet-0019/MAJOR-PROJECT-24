@@ -24,14 +24,14 @@ export default function StudentRegistration() {
 
     const {getItems} = useAPIData();
 
-    React.useEffect(() => {
-        async function fetchData() {
-            const response = await getItems('TPO_NOTIFICATION', null, null, null, null, null, null, true);
-            // console.log(response.data)
-            console.log("notification data -->", response)
-        }
-        fetchData();
-    }, []);
+    // React.useEffect(() => {
+    //     async function fetchData() {
+    //         const response = await getItems('TPO_NOTIFICATION', null, null, null, null, null, null, true);
+    //         // console.log(response.data)
+    //         console.log("notification data -->", response)
+    //     }
+    //     fetchData();
+    // }, []);
 
     const handleSubmit = (event) => {
         event.preventDefault();
