@@ -4,22 +4,15 @@ import { useRouter } from "next/navigation";
 
 
 export default function Home() {
-  const router=useRouter();
+  const router = useRouter();
 
   useEffect(() => {
-    const storedUserType = sessionStorage.getItem("userType");
-    if(storedUserType === "admin"){
-      router.push('/admin/dashboard');
-    }else if(storedUserType === "applicant"){
-      router.push('/client/drives');
-    }else{
-      router.push('/signin');
-    }
+    router.push('/signin');
   }, []);
 
   return (
     <>
-    <h1>Welcome to TPO Portal @ MBM University</h1>
+      <h1>Welcome to TPO Portal @ MBM University</h1>
     </>
   );
 }

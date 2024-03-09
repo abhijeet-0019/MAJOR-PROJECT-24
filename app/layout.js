@@ -26,7 +26,7 @@ function checkUserAuthentication() {
 }
 
 export default function RootLayout({ children }) {
-  const [userType, setUserType] = useState("default");
+  const [userType, setUserType] = useState("");
 
   useEffect(() => {
     const storedUserType = checkUserAuthentication();

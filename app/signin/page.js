@@ -31,8 +31,8 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
- 
-  const { loginStatus,setUser,getAuthHeader} = useAPIAuth();
+
+  const { loginStatus, setUser, getAuthHeader } = useAPIAuth();
   const { getItems } = useAPIData();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -47,7 +47,7 @@ export default function SignIn() {
   };
 
   const handleLogin = async (event) => {
-    event.preventDefault(); 
+    event.preventDefault();
     const user = { email, password };
     /*try {
       const response = await fetch("https://api.mbm.ac.in/auth/login", {
@@ -78,7 +78,7 @@ export default function SignIn() {
       alert("Error during login");
     }
     */
-    setUser(user).then(success=>{
+    setUser(user).then(success => {
       console.log(user);
       console.log("success -> ", success)
       const userType = sessionStorage.userType;
@@ -91,43 +91,45 @@ export default function SignIn() {
       } else {
         alert("Incorrect Login Credentials");
       }
-    });    
+    });
   };
-  
 
-  useEffect(()=>{
-    console.log("Auth Status:",loginStatus, getAuthHeader());
-    if(loginStatus){
-    console.log(sessionStorage.getItem("userEmail"));
-        const user_verified_email = sessionStorage.getItem("userEmail");
-        getItems(
-          "TPO_students_personal_details",
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          true
-        ).then(listResponse=>{
-          const list = listResponse.data;
-          const user = list.find((item) => item.email === user_verified_email);
-          
-          const userType = user?.user_type || "";
-          const user_id = user?.user_id || "";
-          console.log("--> userType to be stored in session storage ", userType);
-          sessionStorage.setItem("userType", userType);
-          sessionStorage.setItem("userID", user_id);
 
-          if (userType === "admin") {
-            router.push("../admin/dashboard");
-            // window.location.reload();
-          } else if (userType === "applicant") {
-            router.push("../client/drives");
-          }
-        });
-      }
-  },[loginStatus]);
+  useEffect(() => {
+    console.log("Auth Status:", loginStatus, getAuthHeader());
+    if (loginStatus) {
+      console.log(sessionStorage.getItem("userEmail"));
+      const user_verified_email = sessionStorage.getItem("userEmail");
+      getItems(
+        "TPO_students_personal_details",
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        true
+      ).then(listResponse => {
+        const list = listResponse.data;
+        const user = list.find((item) => item.email === user_verified_email);
+
+        const userType = user?.user_type || "";
+        const user_id = user?.user_id || "";
+        console.log("--> userType to be stored in session storage ->", userType);
+        sessionStorage.setItem("userType", userType);
+        sessionStorage.setItem("userID", user_id);
+
+        if (userType === "admin") {
+          console.log("reload from successful sign in")
+          router.push("../admin/dashboard");
+          // window.location.reload();
+        } else if (userType === "applicant") {
+          router.push("../client/drives");
+          // window.location.reload();
+        }
+      });
+    }
+  }, [loginStatus]);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -144,7 +146,7 @@ export default function SignIn() {
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5" sx={{ color: 'black', fontWeight: 'bold' }}> 
+          <Typography component="h1" variant="h5" sx={{ color: 'black', fontWeight: 'bold' }}>
             Sign In
           </Typography>
           <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 1 }}>
@@ -170,17 +172,17 @@ export default function SignIn() {
               autoComplete="current-password"
               onChange={handlePasswordChange}
             />
-            
+
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2, color:'black'}}
+              sx={{ mt: 3, mb: 2, color: 'black' }}
               className=" bg-sky-400"
             >
               Sign In
             </Button>
-            
+
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
