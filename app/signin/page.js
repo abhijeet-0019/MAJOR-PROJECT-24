@@ -49,35 +49,7 @@ export default function SignIn() {
   const handleLogin = async (event) => {
     event.preventDefault();
     const user = { email, password };
-    /*try {
-      const response = await fetch("https://api.mbm.ac.in/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, mode: "json" }),
-      });
-      console.log(response, " fetching");
-  
-      if (response.ok) {
-        // If login is successful
-        setUser(user).then((success) => {
-          console.log(user);
-          console.log("success -> ", success);
-          if (success) {
-            router.push("../profile");
-          } else {
-            alert("Incorrect Login Credentials");
-          }
-        });
-      } else {
-        // If login fails
-        console.log("Login failed");
-        alert("Login failed");
-      }
-    } catch (error) {
-      console.log(error, "errorr");
-      alert("Error during login");
-    }
-    */
+    
     setUser(user).then(success => {
       console.log(user);
       console.log("success -> ", success)
@@ -93,7 +65,6 @@ export default function SignIn() {
       }
     });
   };
-
 
   useEffect(() => {
     console.log("Auth Status:", loginStatus, getAuthHeader());
@@ -130,6 +101,14 @@ export default function SignIn() {
       });
     }
   }, [loginStatus]);
+
+  useEffect(()=>{
+    const sreload = sessionStorage.getItem("sreload");
+    if(!sreload){
+      window.location.reload();
+      sessionStorage.setItem("sreload", true);
+    }
+  }, [])
 
   return (
     <ThemeProvider theme={defaultTheme}>

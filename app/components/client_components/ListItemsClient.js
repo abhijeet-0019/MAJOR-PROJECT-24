@@ -78,26 +78,27 @@ export const mainListItems = ({ updateAppBarText }) => (
         <ListItemText primary="Support" />
       </ListItemButton>
     </Link>
-    <Link href="/client/drives">
+    {/* <Link href="/client/drives">
       <ListItemButton onClick={() => updateAppBarText('Logout')}>
         <ListItemIcon>
           <LogoutIcon />
         </ListItemIcon>
         <ListItemText primary="Logout" />
       </ListItemButton>
-    </Link>
-    {/* <Link>
+    </Link> */}
+    <Link href={"/signin"}>
       <ListItemButton onClick={() => {
         localStorage.clear();
-        cookies.remove('access token');
-        cookies.remove('refresh token');
-        window.location.reload;
+        sessionStorage.clear();
+        cookies.remove('accessToken');
+        cookies.remove('refreshToken');
+        // window.location.reload();
       }}>
         <ListItemIcon>
           <LogoutIcon />
         </ListItemIcon>
         <ListItemText primary="Logout" />
       </ListItemButton>
-    </Link> */}
+    </Link>
   </React.Fragment>
 );

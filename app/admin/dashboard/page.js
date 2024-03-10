@@ -2,9 +2,15 @@
 import React, { useEffect } from 'react';
 
 const Dashboard = () => {
-  // useEffect(() => {
-  //   window.location.reload();
-  // }, []);
+
+  useEffect(() => {
+    const hasReloaded = sessionStorage.getItem("reloaded");
+    if (!hasReloaded) {
+      window.location.reload();
+      sessionStorage.setItem("reloaded", true);
+      console.log("reload hua from admin!!!")
+    }
+  }, []);
 
   return (
     <div>
