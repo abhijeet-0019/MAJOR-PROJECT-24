@@ -53,7 +53,7 @@ export default function SignIn() {
     setUser(user).then(success => {
       console.log(user);
       console.log("success -> ", success)
-      const userType = sessionStorage.userType;
+      // const userType = sessionStorage.userType;
       if (success) {
         const userType = sessionStorage.getItem("userType");
         //console.log(userType)
