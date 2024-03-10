@@ -4,17 +4,20 @@ export async function  middleware(request) {
     try {
         // return NextResponse.redirect(new URL('/', request.nextUrl));
           const path = request.nextUrl.pathname;
-          const isPublicPath = path === '/sign';
+          const isPublicPath = path === '/signin';
           const token = request.cookies.get('accessToken')?.value || '';
           // console.log(token)
+          // console.log("-------------")
           if (!isPublicPath && !token  ) {
-            return NextResponse.redirect(new URL('/sign', request.nextUrl));
+            return NextResponse.redirect(new URL('/signin', request.nextUrl));
           }
           let decodedToken;
           decodedToken = jwt.decode(token);
           const isAdmin=decodedToken.admin_access
           const isApplicant=decodedToken.app_access
-          
+          // console.log("is admin -", isAdmin);
+          // console.log("is applicant - ", isApplicant);
+          // consolg.log("jwt token - ", token);
           if(isPublicPath && token){
             const defaultPage=isAdmin?'/admin/dashboard':'/client/drives'
             return NextResponse.redirect(new URL(defaultPage, request.nextUrl));
