@@ -13,6 +13,7 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import WorkIcon from '@mui/icons-material/Work';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
+import cookies from 'js-cookie';
 
 export const mainListItems = ({ updateAppBarText }) => (
   <React.Fragment>
@@ -64,14 +65,19 @@ export const mainListItems = ({ updateAppBarText }) => (
         <ListItemText primary="Company List" />
       </ListItemButton>
     </Link>
-    <Link href="/admin/dashboard">
-      <ListItemButton onClick={() => updateAppBarText('Logout')}>
+    <Link href={"/signin"}>
+      <ListItemButton onClick={() => {
+        localStorage.clear();
+        sessionStorage.clear();
+        cookies.remove('accessToken');
+        cookies.remove('refreshToken');
+        // window.location.reload();
+      }}>
         <ListItemIcon>
           <LogoutIcon />
         </ListItemIcon>
         <ListItemText primary="Logout" />
       </ListItemButton>
     </Link>
-    
   </React.Fragment>
 );
