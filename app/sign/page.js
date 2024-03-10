@@ -55,6 +55,8 @@ export default function SignIn() {
       console.log("success -> ", success)
       const userType = sessionStorage.userType;
       if (success) {
+        const userType = sessionStorage.getItem("userType");
+        //console.log(userType)
         if (userType === "admin") {
           router.push("../admin/dashboard");
         } else if (userType === "applicant") {
