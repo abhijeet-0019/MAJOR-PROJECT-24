@@ -4,11 +4,11 @@ export async function  middleware(request) {
     try {
         // return NextResponse.redirect(new URL('/', request.nextUrl));
           const path = request.nextUrl.pathname;
-          const isPublicPath = path === '/sign';
+          const isPublicPath = path === '/signin';
           const token = request.cookies.get('accessToken')?.value || '';
           // console.log(token)
           if (!isPublicPath && !token  ) {
-            return NextResponse.redirect(new URL('/sign', request.nextUrl));
+            return NextResponse.redirect(new URL('/signin', request.nextUrl));
           }
           let decodedToken;
           decodedToken = jwt.decode(token);
