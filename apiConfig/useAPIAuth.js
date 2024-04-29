@@ -3,7 +3,7 @@ import {getAuthURL} from './api.config';
 import Cookies from 'js-cookie';
 
 //Refresh access token every 5 minutes
-const REFRESH_DELAY = 90000;
+const REFRESH_DELAY = 9000000;
 
 //Manage token with cookies. 
 const getLoginToken = () => { 
