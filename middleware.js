@@ -1,5 +1,6 @@
 const { NextResponse } = require('next/server');
 const jwt = require('jsonwebtoken');
+
 export async function  middleware(request) {
     try {
         // return NextResponse.redirect(new URL('/', request.nextUrl));
@@ -13,8 +14,11 @@ export async function  middleware(request) {
           }
           let decodedToken;
           decodedToken = jwt.decode(token);
-          const isAdmin=decodedToken.admin_access
-          const isApplicant=decodedToken.app_access
+
+        //   const isAdmin=decodedToken.admin_access
+        //   const isApplicant=decodedToken.app_access
+          const isAdmin = decodedToken.role === '558f7465-54e1-494b-928a-30079d7b6cca'?true:false;
+          const isApplicant = decodedToken.role != '558f7465-54e1-494b-928a-30079d7b6cca'?true:false;
           // console.log("is admin -", isAdmin);
           // console.log("is applicant - ", isApplicant);
           // consolg.log("jwt token - ", token);

@@ -17,6 +17,8 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import useAPIAuth from "../../../apiConfig/useAPIAuth";
 import { useRouter } from "next/navigation";
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
 
 const defaultTheme = createTheme();
 
@@ -41,18 +43,30 @@ const FAQPage = () => {
     async function fetchData() {
       const response = await getItems('TPO_FAQ', null, null, null, null, null, null, true);
       setFaqs(response.data);
-      console.log("faqs --> ",faqs);
+      console.log("faqs --> ", faqs);
     }
     fetchData();
   }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const faq = { faq_question, faq_ans };
-
-    await createItem("TPO_FAQ", faq, true, getAccessToken);
-
+    const faq = {
+      'question': faq_question,
+      'answer': faq_ans
+    };
+    try {
+      const accessT = getAccessToken()
+      await createItem("TPO_FAQ", faq, true, accessT);
+      // If the API call is successful, you can perform any additional actions here
+    } catch (error) {
+      // Handle the error
+      console.error("Error creating FAQ:", error);
+      // Optionally, you can display an error message to the user
+      alert("Failed to create FAQ. Please try again later.");
+    }
+    window.location.reload();
   };
+
 
   return (
     <div>
@@ -60,67 +74,69 @@ const FAQPage = () => {
         <Table aria-label="collapsible table">
           <TableBody>
             {faqs.map((faq) => (
-              <li key={faq.id}>{faq.question}</li>
+              <TableRow key={faq.id}>
+                <TableCell>{faq.question}</TableCell>
+              </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
       <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}> */}
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
+          <Box
+            sx={{
+              marginTop: 8,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}> */}
             {/* <LockOutlinedIcon /> */}
-          {/* </Avatar> */}
-          <Typography component="h1" variant="h5" sx={{ color: 'black', fontWeight: 'bold' }}>
-            Add New Notification
-          </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="faq_question"
-              label="faq_question"
-              type='string'
-              name="faq_question"
-              // autoComplete="faq_question"
-              autoFocus
-              onChange={handleQueChange}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="faq_ans"
-              label="faq_ans"
-              type="string"
-              id="faq_ans"
-              // autoComplete="current-password"
-              onChange={handleAnsChange}
-            />
+            {/* </Avatar> */}
+            <Typography component="h1" variant="h5" sx={{ color: 'black', fontWeight: 'bold' }}>
+              Add New Notification
+            </Typography>
+            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="faq_question"
+                label="faq_question"
+                type='string'
+                name="faq_question"
+                // autoComplete="faq_question"
+                autoFocus
+                onChange={handleQueChange}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="faq_ans"
+                label="faq_ans"
+                type="string"
+                id="faq_ans"
+                // autoComplete="current-password"
+                onChange={handleAnsChange}
+              />
 
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2, color: 'black' }}
-              className=" bg-sky-400"
-            >
-              Submit
-            </Button>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2, color: 'black' }}
+                className=" bg-sky-400"
+              >
+                Submit
+              </Button>
 
+            </Box>
           </Box>
-        </Box>
-      </Container>
-    </ThemeProvider>
+        </Container>
+      </ThemeProvider>
     </div>
   )
 }
