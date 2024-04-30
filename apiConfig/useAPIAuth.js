@@ -161,7 +161,7 @@ export default function useAPIAuth(){
     }
 
     const getAccessToken=  () => {
-        let {accessToken,refreshToken} = getLoginToken();
+        let {accessToken, refreshToken} = getLoginToken();
         if(!!accessToken){
             return accessToken;
         }else{

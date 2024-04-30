@@ -1,5 +1,5 @@
 'use client'
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
@@ -13,6 +13,15 @@ const Drives = () => {
   const handleUpcomingDrivesClick = () => {
     router.push('/client/drives/upcoming_drives');
   };
+
+  useEffect(() => {
+    const hasReloaded = sessionStorage.getItem("reloaded");
+    if (!hasReloaded) {
+      window.location.reload();
+      sessionStorage.setItem("reloaded", true);
+      console.log("reload hua from admin!!!")
+    }
+  }, []);
 
   return (
     <div>
