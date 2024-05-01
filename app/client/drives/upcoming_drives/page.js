@@ -1,6 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react';
 import useAPIData from '../../../../apiConfig/useAPIData';
+import useAPIAuth from '../../../../apiConfig/useAPIAuth';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -19,15 +20,20 @@ import CloseIcon from '@mui/icons-material/Close';
 import UploadIcon from '@mui/icons-material/CloudUpload';
 
 const UpcomingDrives = () => {
-    const { getItems } = useAPIData();
+    const { getItems, updateItem, createItem } = useAPIData();
+    const { getAccessToken } = useAPIAuth();
     const [upcomingDrives, setUpcomingDrives] = useState([]);
     const [selectedDrive, setSelectedDrive] = useState(null);
     const [openDriveDialog, setOpenDriveDialog] = useState(false);
     const [openApplyDialog, setOpenApplyDialog] = useState(false);
+    const [resumeFile, setResumeFile] = useState(null);
+    const [driveID, setDriveID] = useState(null);
+    const [placeHolderRound, serPlaceHolderRound] = useState(null);
+    const [userID, setUserID] = useState(null);
 
     useEffect(() => {
         async function fetchData() {
-            const response = await getItems('TPO_Drive',null, null, null, null, null, null, true);
+            const response = await getItems('TPO_Drive', null, null, null, null, null, null, true);
             const upcomingDrives = response.data.filter(drive => drive.DriveStatus === "Upcoming");
             setUpcomingDrives(upcomingDrives);
         }
@@ -37,24 +43,50 @@ const UpcomingDrives = () => {
     const handleShowDetails = (drive) => {
         setSelectedDrive(drive);
         setOpenDriveDialog(true);
+        setDriveID(drive.id);
+        serPlaceHolderRound(drive.OngoingRound);
     };
 
     const handleApply = () => {
         setOpenApplyDialog(true);
     };
 
-    const handleUploadResume = () => {
-        // Handle resume upload logic
-        alert('Resume uploaded successfully');
+    const handleUploadResume = async () => {
+        try {
+            const userEmail = sessionStorage.getItem('userEmail');
+            const response = await getItems('TPO_students_personal_details', null, null, null, { 'email': { '_eq': userEmail } }, null, null, true);
+            setUserID(response.data[0].user_id);
+            console.log(userID);
+            const formData = new FormData();
+            formData.append('resume', resumeFile);
+
+            const accessT = getAccessToken();
+            await updateItem("TPO_RESUME", userID, formData, true, accessT);
+            alert('Resume uploaded successfully');
+        } catch (error) {
+            console.error("Error uploading Resume:", error);
+            alert("Failed to upload Resume. Please try again later.");
+        }
     };
 
-    const handleSubmitApplication = () => {
-        // Handle application submission logic
+    const handleSubmitApplication = async () => {
+        try {
+            const applicantPayload = {
+                "Applicant": userID,
+                "CurrentRound": placeHolderRound,
+                "Drive": driveID,
+                "Status": "Applied",
+            }
+            const accessT = getAccessToken();
+            await createItem("TPO_Application", applicantPayload, true, accessT);
+            alert('Application Submitted Successfully');
+        } catch (error) {
+            console.error("Error Submitting Application:", error);
+            alert("Failed to Submit Application. Please try again later or contact the TPO Representative");
+        }
         setOpenDriveDialog(false);
         setOpenApplyDialog(false);
-        alert('Your application is being submitted');
     };
-
 
     return (
         <div>
@@ -123,7 +155,7 @@ const UpcomingDrives = () => {
                     <DialogContentText>
                         Upload your resume:
                     </DialogContentText>
-                    <input type="file" accept=".pdf,.doc,.docx" />
+                    <input type="file" accept=".pdf" onChange={(e) => setResumeFile(e.target.files[0])} />
                 </DialogContent>
                 <DialogActions>
                     <Button startIcon={<UploadIcon />} onClick={handleUploadResume}>Upload</Button>
