@@ -2,60 +2,139 @@
 import React, { useEffect, useState } from 'react';
 import useAPIData from '../../../../apiConfig/useAPIData';
 import useAPIAuth from '../../../../apiConfig/useAPIAuth';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import UploadIcon from '@mui/icons-material/CloudUpload';
+import { Button, Divider, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@mui/material';
 
 const OngoingDrives = () => {
-  const { getItems, updateItem, createItem } = useAPIData();
+  const { getItems, getItem } = useAPIData();
   const { getAccessToken } = useAPIAuth();
-  const [upcomingDrives, setUpcomingDrives] = useState([]);
+  const [ongoingDrives, setOngoingDrives] = useState([]);
   const [selectedDrive, setSelectedDrive] = useState(null);
   const [openDriveDialog, setOpenDriveDialog] = useState(false);
-  const [openApplyDialog, setOpenApplyDialog] = useState(false);
-  const [resumeFile, setResumeFile] = useState(null);
-  const [driveID, setDriveID] = useState(null);
-  const [placeHolderRound, serPlaceHolderRound] = useState(null);
-  const [userID, setUserID] = useState(null);
+  const [driveRounds, setDrivesRounds] = useState(null);
+  const [userApplications, setUserApplications] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
       const userEmail = sessionStorage.getItem('userEmail');
-      const res_st_id = await getItems('TPO_students_personal_details', null, null, null, { 'email': { '_eq': userEmail } }, null, null, true);
-      setUserID(res_st_id.data[0].user_id);
-      console.log('userID', userID);
-      const response = await getItems('TPO_Drive', null, null, null, { 'Applicant': { '_eq': 'be6969d5-4b0a-4369-934b-9eb7030efbe7' } }, null, null, true);
-      console.log('drive: ', response.data);
-      const upcomingDrives = response.data.filter(drive => drive.DriveStatus === "Upcoming");
-      setUpcomingDrives(upcomingDrives);
+      try {
+        const userResponse = await getItems('TPO_students_personal_details', null, null, null, { 'email': { '_eq': userEmail } }, null, null, true);
+        const userId = userResponse.data[0].user_id;
+
+        const applicationsResponse = await getItems('TPO_Application', '*,Drive.*', null, null, null, null, null, true);
+        if (applicationsResponse.error) {
+          console.error("Error fetching applications --> ", applicationsResponse.error);
+          return;
+        }
+
+        const TempUserApplications = applicationsResponse.data.filter(application => application.Applicant === userId && application.Status === 'Ongoing');
+        setUserApplications(TempUserApplications);
+        if (TempUserApplications.length === 0) {
+          console.log("user id ---", userId);
+          console.log("----", TempUserApplications);
+          console.log("No ongoing applications found for user");
+          return;
+        }
+        const ongoingDrives = TempUserApplications.map(application => application.Drive);
+        console.log("OngoingDrives --> ", ongoingDrives);
+        setOngoingDrives(ongoingDrives)
+
+        const TempDriveRouds = await getItems('TPO_DriveRound', null, null, null, null, null, null, true);
+        setDrivesRounds(TempDriveRouds);
+
+      } catch (error) {
+        console.error("Error fetching data --> ", error);
+      }
     }
     fetchData();
   }, []);
 
-  useEffect(() => {
-    if (userID) {
-      console.log('userID', userID);
-    }
-  }, [userID]);
+  const handleShowDetails = async (drive) => {
+    const ongoingRound = drive.OngoingRound;
+    const round = driveRounds.data.find(r => r.id === ongoingRound);
+    const roundName = round ? round.RoundName : 'Round not found';
+    const applicantStatus = userApplications?.find(application => application.Drive.id === drive.id)?.Status;
+    // console.log("--- CURRENT DRIVE ID", drive.id);
+    // console.log("--->", applicantStatus);
+    setSelectedDrive({ ...drive, roundName, applicantStatus });
+    setOpenDriveDialog(true);
+  };
 
   return (
-    <div>
-      <h1>Ongoing Drives</h1>
+    <div style={{ maxWidth: 800, margin: '40px auto', padding: 20 }}>
+      <h1 style={{ textAlign: 'center', marginBottom: 20 }}>Ongoing Drives</h1>
+      <TableContainer component={Paper} style={{ boxShadow: '0px 0px 10px rgba(0,0,0,0.1)' }}>
+        <Table aria-label="ongoing drives table">
+          <TableHead>
+            <TableRow>
+              <TableCell style={{ fontWeight: 600 }}>Drive</TableCell>
+              <TableCell style={{ fontWeight: 600 }}>View Details</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {ongoingDrives.map(drive => (
+              <TableRow key={drive.id}>
+                <TableCell>{drive.Name}</TableCell>
+                <TableCell>
+                  <Button onClick={() => handleShowDetails(drive)} variant="contained" color="primary" style={{ backgroundColor: '#007bff', color: '#fff' }}>
+                    View
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Dialog open={openDriveDialog} onClose={() => setOpenDriveDialog(false)}>
+        {/* <DialogTitle style={{ textAlign: 'center' }}>{selectedDrive && `Drive ID: ${selectedDrive.id}`}</DialogTitle> */}
+        <DialogContent sx={{ py: 3, px: 5 }}>
+          <Typography variant="h6" fontFamily="Roboto, sans-serif" sx={{ mb: 2, textAlign: 'center' }}>
+            Drive Overview
+          </Typography>
+          <Divider sx={{ mb: 3 }} />
+          <Typography variant="body1" fontFamily="Roboto, sans-serif" sx={{ mb: 1 }}>
+            <strong>Ongoing Round:</strong> {selectedDrive && selectedDrive.roundName}
+          </Typography>
+          {/* <Divider sx={{ mb: 2 }} /> */}
+          <Typography variant="body1" fontFamily="Roboto, sans-serif" sx={{ mb: 1 }}>
+            <strong>Applicant Status:</strong> {selectedDrive && selectedDrive.applicantStatus}
+          </Typography>
+          {/* <Divider sx={{ mb: 3 }} /> */}
+          <Typography variant="h6" fontFamily="Roboto, sans-serif" sx={{ mb: 2, textAlign: 'center' }}>
+            Drive Details
+          </Typography>
+          <Divider sx={{ mb: 2 }} />
+          <Typography variant="body1" fontFamily="Roboto, sans-serif" sx={{ mb: 1 }}>
+            <strong>Name:</strong> {selectedDrive && selectedDrive.Name}
+          </Typography>
+          <Typography variant="body1" fontFamily="Roboto, sans-serif" sx={{ mb: 1 }}>
+            <strong>Description:</strong> {selectedDrive && selectedDrive.Description}
+          </Typography>
+          <Typography variant="body1" fontFamily="Roboto, sans-serif" sx={{ mb: 1 }}>
+            <strong>Start Date:</strong> {selectedDrive && selectedDrive.StartDate}
+          </Typography>
+          <Typography variant="body1" fontFamily="Roboto, sans-serif" sx={{ mb: 1 }}>
+            <strong>MaxCTC:</strong> {selectedDrive && selectedDrive.MaxCTC}
+          </Typography>
+          <Typography variant="body1" fontFamily="Roboto, sans-serif" sx={{ mb: 1 }}>
+            <strong>Slab:</strong> {selectedDrive && selectedDrive.Slab}
+          </Typography>
+          <Typography variant="body1" fontFamily="Roboto, sans-serif" sx={{ mb: 1 }}>
+            <strong>Roles Offered:</strong> {selectedDrive && selectedDrive.RolesOffered}
+          </Typography>
+          <Typography variant="body1" fontFamily="Roboto, sans-serif" sx={{ mb: 1 }}>
+            <strong>Mode:</strong> {selectedDrive && selectedDrive.Mode}
+          </Typography>
+        </DialogContent>
+        <DialogActions sx={{ py: 2, justifyContent: 'center' }}>
+          <Button onClick={() => setOpenDriveDialog(false)} variant="contained" color="primary" style={{ backgroundColor: '#007bff', color: '#fff' }}>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
-}
+};
 
 export default OngoingDrives;
