@@ -29,6 +29,10 @@ const UpcomingDrives = () => {
   const [selectedDrive, setSelectedDrive] = useState(null);
   const [openDriveDialog, setOpenDriveDialog] = useState(false);
   const [driveApplicants, setDriveApplicants] = useState([]);
+  const [academicDetails, setAcademicDetails] = useState([]);
+  const [studentData, setStudentData] = useState([]);
+  const [personalDetails, setPersonalDetails] = useState([]);
+  const [combinedDetails, setCombinedDetails] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -51,16 +55,58 @@ const UpcomingDrives = () => {
     const driveApplicants = applications.data.filter(application => application.Drive === selectedDrive.id);
     console.log('drive applicants: ', driveApplicants);
     setDriveApplicants(driveApplicants);
+
+    const academicDetails = await getItems('TPO_academic_details', null, null, null, null, null, null, true);
+    console.log(academicDetails);
+    const filteredAcademicDetails = academicDetails.data.filter(academic => driveApplicants.some(applicant => applicant.Applicant === academic.user_id));
+    setAcademicDetails(filteredAcademicDetails);
+    console.log("filterd studets: ", filteredAcademicDetails);
+
+    const personalDetailsData = await getItems('TPO_students_personal_details', null, null, null, null, null, null, true);
+    // console.log("personal datails: ",personalDetailsData);
+    const filteredPersonalDetails = personalDetailsData.data.filter(personal => driveApplicants.some(applicant => applicant.Applicant === personal.user_id));
+    console.log("filtered personal details: ", filteredPersonalDetails);
+    setPersonalDetails(filteredPersonalDetails);
+    console.log("filtered personal details", filteredPersonalDetails);
+
+    const combinedData = filteredAcademicDetails.map(academic => {
+      const personalDetail = filteredPersonalDetails.find(personal => personal.user_id === academic.user_id);
+      return {
+        ...personalDetail,
+        ...academic,
+        // user_id: personalDetail.user_id,
+      };
+    });
+
+    setCombinedDetails(combinedData);
+    console.log("combinedData", combinedData);
   };
 
-  const handleExportToXLSX = () => {
-    const worksheet = XLSX.utils.json_to_sheet(driveApplicants);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Drive Applicants');
-    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'buffer' });
-    const data = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-    saveAs(data, `drive-applicants-${selectedDrive.Name}.xlsx`);
+  // const handleExportToXLSX = async () => {
+  //   await handleExtractStudentsList();
+  //   console.log(combinedDetails);
+  //   const worksheet = XLSX.utils.json_to_sheet(combinedDetails);
+  //   const workbook = XLSX.utils.book_new();
+  //   XLSX.utils.book_append_sheet(workbook, worksheet, 'Drive Applicants');
+  //   const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'buffer' });
+  //   const data = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  //   saveAs(data, `drive-applicants-${selectedDrive.Name}.xlsx`);
+  // };
+
+  const handleExportToXLSX = async () => {
+    await handleExtractStudentsList();
   };
+
+  useEffect(() => {
+    if (combinedDetails.length > 0) {
+      const worksheet = XLSX.utils.json_to_sheet(combinedDetails);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Drive Applicants');
+      const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'buffer' });
+      const data = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      saveAs(data, `drive-applicants-${selectedDrive.Name}.xlsx`);
+    }
+  }, [combinedDetails]);
 
   return (
     <div>
@@ -128,7 +174,7 @@ const UpcomingDrives = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          {/* <Button onClick={handleExtractStudentsList}>Extract Students List</Button> */}
+          <Button onClick={handleExtractStudentsList}>Extract Students List</Button>
           <Button onClick={handleExportToXLSX}>Export Student List</Button>
           <IconButton aria-label="close" onClick={() => setOpenDriveDialog(false)} sx={{ position: 'absolute', right: 8, top: 8 }}>
             <CloseIcon />
