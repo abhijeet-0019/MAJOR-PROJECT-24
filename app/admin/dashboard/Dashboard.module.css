@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .container {
+    flex-direction: row;
+  }
+}
+
+.barChartContainer {
+  flex: 70%;
+  text-align: center;
+}
+
+.pieChartContainer {
+  flex: 30%;
+  margin-top: 150px;
+}
+
+.heading {
+  font-size: 30px;
+  margin: 40px;
+  font-weight: bold;
+}
