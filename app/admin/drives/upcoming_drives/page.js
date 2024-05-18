@@ -19,6 +19,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import UploadIcon from '@mui/icons-material/CloudUpload';
 import { saveAs } from 'file-saver';
+import { Typography } from '@mui/material';
 import * as XLSX from 'xlsx';
 
 const UpcomingDrives = () => {
@@ -63,7 +64,16 @@ const UpcomingDrives = () => {
 
   return (
     <div>
-      <h1>OngoingDrives</h1>
+      <Typography
+        variant="h4"
+        component="h1"
+        align="center"
+        gutterBottom
+        sx={{ marginTop: '20px' }} // Adding top margin for spacing
+      >
+        Upcoming Drives
+      </Typography>
+
       <TableContainer component={Paper}>
         <Table aria-label="ongoing drives table">
           <TableHead>
@@ -118,8 +128,8 @@ const UpcomingDrives = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleExtractStudentsList}>Extract Students List</Button>
-          <Button onClick={handleExportToXLSX}>Export to XLSX</Button>
+          {/* <Button onClick={handleExtractStudentsList}>Extract Students List</Button> */}
+          <Button onClick={handleExportToXLSX}>Export Student List</Button>
           <IconButton aria-label="close" onClick={() => setOpenDriveDialog(false)} sx={{ position: 'absolute', right: 8, top: 8 }}>
             <CloseIcon />
           </IconButton>

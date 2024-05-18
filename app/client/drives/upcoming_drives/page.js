@@ -18,6 +18,7 @@ import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import UploadIcon from '@mui/icons-material/CloudUpload';
+import { Typography } from '@mui/material';
 
 const UpcomingDrives = () => {
   const { getItems, updateItem, createItem } = useAPIData();
@@ -95,7 +96,15 @@ const UpcomingDrives = () => {
 
   return (
     <div>
-      <h1>Ongoing Drives</h1>
+      <Typography
+        variant="h4"
+        component="h1"
+        align="center"
+        gutterBottom
+        sx={{ marginTop: '20px' }} // Adding top margin for spacing
+      >
+        Upcoming Drives
+      </Typography>
       <TableContainer component={Paper}>
         <Table aria-label="upcoming drives table">
           <TableHead>
