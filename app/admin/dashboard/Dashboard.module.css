@@ -4,6 +4,24 @@
   flex-direction: column;
 }
 
+.table {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Other styles remain unchanged */
+
+.headingContainer {
+  display: flex;
+  justify-content: right; 
+  margin-top: 2px; 
+
+}
+
+.heading {
+  font-size: 1.5em; 
+  font-weight: bold;
+}
+
 @media (min-width: 768px) {
   .container {
     flex-direction: row;
