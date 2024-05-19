@@ -58,12 +58,12 @@ export const mainListItems = ({ updateAppBarText }) => (
         <ListItemText primary="Team TPO" />
       </ListItemButton>
     </Link>
-    <Link href="/d_f/p_stats">
+    <Link href="/d_f/p_prep">
       <ListItemButton onClick={() => updateAppBarText('Placement Stats')}>
         <ListItemIcon>
           <QueryStatsIcon />
         </ListItemIcon>
-        <ListItemText primary="Placement Stats" />
+        <ListItemText primary="Preperation Guide" />
       </ListItemButton>
     </Link>
     <Link href="/d_f/placement_brochure">
