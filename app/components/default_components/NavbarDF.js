@@ -124,9 +124,7 @@ export default function Navbar({children}) {
               {appBarText}
             </Typography>
             <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
+              
             </IconButton>
           </Toolbar>
         </AppBar>
