@@ -13,6 +13,7 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import WorkIcon from '@mui/icons-material/Work';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
+import EditNotificationsIcon from '@mui/icons-material/EditNotifications';
 import cookies from 'js-cookie';
 
 export const mainListItems = ({ updateAppBarText }) => (
@@ -57,12 +58,12 @@ export const mainListItems = ({ updateAppBarText }) => (
         <ListItemText primary="Student List" />
       </ListItemButton>
     </Link>
-    <Link href="/admin/companies">
-      <ListItemButton onClick={() => updateAppBarText('Company List')}>
+    <Link href="/admin/notification">
+      <ListItemButton onClick={() => updateAppBarText('Dispatch Notification')}>
         <ListItemIcon>
-          <LocalLibraryIcon />
+          <EditNotificationsIcon />
         </ListItemIcon>
-        <ListItemText primary="Company List" />
+        <ListItemText primary="Dispatch Notification" />
       </ListItemButton>
     </Link>
     <Link href={"/signin"}>

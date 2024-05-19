@@ -34,14 +34,14 @@ export const mainListItems = ({ updateAppBarText }) => (
         <ListItemText primary="SignIn" />
       </ListItemButton>
     </Link>
-    <Link href="/d_f/st_reg">
+    {/* <Link href="/d_f/st_reg">
       <ListItemButton onClick={() => updateAppBarText('Student Registration')}>
         <ListItemIcon>
           <AppRegistrationIcon />
         </ListItemIcon>
         <ListItemText primary="Student Registration" />
       </ListItemButton>
-    </Link>
+    </Link> */}
     <Link href="/d_f/about_tpo">
       <ListItemButton onClick={() => updateAppBarText('About')}>
         <ListItemIcon>

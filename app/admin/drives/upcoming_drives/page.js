@@ -174,7 +174,7 @@ const UpcomingDrives = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleExtractStudentsList}>Extract Students List</Button>
+          {/* <Button onClick={handleExtractStudentsList}>Extract Students List</Button> */}
           <Button onClick={handleExportToXLSX}>Export Student List</Button>
           <IconButton aria-label="close" onClick={() => setOpenDriveDialog(false)} sx={{ position: 'absolute', right: 8, top: 8 }}>
             <CloseIcon />

@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Button from '@mui/material/Button';
+import {Button, Box, Typography} from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 
 const Drives = () => {
@@ -24,23 +24,29 @@ const Drives = () => {
   }, []);
 
   return (
-    <div>
-      <h1>TPO DRIVES</h1>
-      <Button
-        variant="outlined"
-        endIcon={<SendIcon />}
-        onClick={handleOngoingDrivesClick}
-      >
-        Ongoing Drives
-      </Button>
-      <Button
-        variant="outlined"
-        endIcon={<SendIcon />}
-        onClick={handleUpcomingDrivesClick}
-      >
-        Upcoming Drives
-      </Button>
-    </div>
+    <Box>
+      <Box mb={4} mt={4}>
+        <Typography variant="h5" component="h2" align="center" gutterBottom>
+          TPO DRIVES
+        </Typography>
+      </Box>
+      <Box display="flex" justifyContent="center" gap={2}>
+        <Button
+          variant="outlined"
+          endIcon={<SendIcon />}
+          onClick={handleOngoingDrivesClick}
+        >
+          Ongoing Drives
+        </Button>
+        <Button
+          variant="outlined"
+          endIcon={<SendIcon />}
+          onClick={handleUpcomingDrivesClick}
+        >
+          Upcoming Drives
+        </Button>
+      </Box>
+    </Box>
   );
 };
 
