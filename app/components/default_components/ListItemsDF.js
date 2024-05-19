@@ -74,7 +74,7 @@ export const mainListItems = ({ updateAppBarText }) => (
         <ListItemText primary="MBM Brochure" />
       </ListItemButton>
     </Link>
-    <Link href="/">
+    <Link href="/d_f/alumni_connect">
       <ListItemButton onClick={() => updateAppBarText('Alumni Connect')}>
         <ListItemIcon>
           <HandshakeIcon />
