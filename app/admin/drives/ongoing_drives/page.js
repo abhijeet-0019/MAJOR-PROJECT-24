@@ -144,8 +144,8 @@ const OngoingDrives = () => {
       console.log("Drive updated successfully:", updatedDrive);
 
 
-      // window.alert('Drive updated successfully.');
-      // window.location.reload();
+      window.alert('Drive updated successfully.');
+      window.location.reload();
     } catch (error) {
       console.error("Error updating drive:", error);
       window.alert('An error occurred while updating the drive. Please try again later.');
