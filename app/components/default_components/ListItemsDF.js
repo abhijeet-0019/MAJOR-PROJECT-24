@@ -82,7 +82,7 @@ export const mainListItems = ({ updateAppBarText }) => (
         <ListItemText primary="Alumi Connect" />
       </ListItemButton>
     </Link>
-    <Link href="/">
+    <Link href="/d_f/company_connect">
       <ListItemButton onClick={() => updateAppBarText('Company Connect')}>
         <ListItemIcon>
           <BusinessIcon />
